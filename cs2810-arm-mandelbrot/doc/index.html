@@ -1,9 +1,8 @@
-<html><head></head><body><h1>Reverse itoa</h1>
+<html><head></head><body><h1>Itoa</h1>
 
 <p>Write a function in ARM assembly language to convert an integer
 value (non-negative) to text. The function should follow normal
-calling conventions. The text produced will be in reverse order,
-e.g., 138 will be written as &#34;831&#34;.</p>
+calling conventions.</p>
 
 <p>The function is called <code>itoa</code> and takes two parameters. The first is
 the address of a buffer in memory where the output should be
@@ -25,12 +24,15 @@ number), and the following values should be in the given memory
 locations:</p>
 
 <ul>
-<li>0x121212: 55 (ASCII code for &#39;7&#39;)</li>
-<li>0x121211: 57 (ASCII code for &#39;9&#39;)</li>
 <li>0x121210: 51 (ASCII code for &#39;3&#39;)</li>
+<li>0x121211: 57 (ASCII code for &#39;9&#39;)</li>
+<li>0x121212: 55 (ASCII code for &#39;7&#39;)</li>
 </ul>
 
-<p>The code to implement this is given in class.</p>
+<p>The code from the previous step does most of the conversion, but it
+leaves the string in reverse order. Complete the function by
+reversing the characters in the string so that they are in the right
+order.</p>
 
 <h2>Testing</h2>
 

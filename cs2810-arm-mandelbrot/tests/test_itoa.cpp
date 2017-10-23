@@ -46,19 +46,19 @@ TEST(itoa, double) {
     int n = regwrapper(buff, 10);
     EXPECT_EQ(2, n);
     buff[n] = 0;
-    EXPECT_STREQ("01", buff);
+    EXPECT_STREQ("10", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 19);
     EXPECT_EQ(2, n);
     buff[n] = 0;
-    EXPECT_STREQ("91", buff);
+    EXPECT_STREQ("19", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 20);
     EXPECT_EQ(2, n);
     buff[n] = 0;
-    EXPECT_STREQ("02", buff);
+    EXPECT_STREQ("20", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 55);
@@ -70,7 +70,7 @@ TEST(itoa, double) {
     n = regwrapper(buff, 89);
     EXPECT_EQ(2, n);
     buff[n] = 0;
-    EXPECT_STREQ("98", buff);
+    EXPECT_STREQ("89", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 99);
@@ -87,7 +87,7 @@ TEST(itoa, multi) {
     int n = regwrapper(buff, 100);
     EXPECT_EQ(3, n);
     buff[n] = 0;
-    EXPECT_STREQ("001", buff);
+    EXPECT_STREQ("100", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 999);
@@ -99,12 +99,12 @@ TEST(itoa, multi) {
     n = regwrapper(buff, 123456);
     EXPECT_EQ(6, n);
     buff[n] = 0;
-    EXPECT_STREQ("654321", buff);
+    EXPECT_STREQ("123456", buff);
     EXPECT_EQ(0, bad_register);
 
     n = regwrapper(buff, 987654321);
     EXPECT_EQ(9, n);
     buff[n] = 0;
-    EXPECT_STREQ("123456789", buff);
+    EXPECT_STREQ("987654321", buff);
     EXPECT_EQ(0, bad_register);
 }

@@ -17,7 +17,7 @@ _start:
                 bl      itoa
 
                 @ write the buffer to stdout
-                @ you should see 0864297531 printed to stdout
+                @ you should see 1357924680 printed to stdout
                 mov     r2, r0
                 mov     r0, #stdout
                 ldr     r1, =buffer
