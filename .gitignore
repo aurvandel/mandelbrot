@@ -1,2 +1,5 @@
 *.o
 *.out
+*.gdb_history
+*.gdbinit
+*.swp
