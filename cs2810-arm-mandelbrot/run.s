@@ -50,17 +50,27 @@ run:
 
 		mov	r0, #fail_writeheader
 		pop	{r4,r5,r7,pc}
-2:		
+2:
+						@bufsize = 0
+						@for column from 0 to xsize-1 inclusive:
+    							@color = column << 8   @ color = column shifted left 8 bits
+    							@bufsize += writeRGB(buffer+bufsize, color)
+    							@buffer[bufsize] = ' '
+    							@bufsize += 1
+						@buffer[bufsize-1] = '\n'  @ replace last space with a newline
+						@status = write(fd, buffer, bufsize)
+						@if status < 0: return fail_writerow
+3:		
 		mov	r0, r4			@status = close(fd)
 		mov	r7, #sys_close
 		svc	#0
 		
 		cmp	r0, #0			@if status < 0: return fail_close
-		bge	3f
+		bge	4f
 
 		mov	r0, #fail_close
 		pop	{r4,r5,r7,pc}
-3:
+4:
 		mov	r0, #0			@return 0 (success)
 		pop	{r4,r5,r7,pc}
   
