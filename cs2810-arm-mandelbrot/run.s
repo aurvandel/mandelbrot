@@ -15,10 +15,12 @@
                 .text
 		
 		@r4 = fd
-		
+		@r5 = bufsize
+		@r8 = column
+
 @ run() -> exit code
 run:
-		push	{r4,r5,r7,lr}
+		push	{r4,r5,r7,r8,r9,lr}
 		ldr	r0, =filename
 		ldr	r1, =flags		@fd = open(filename, flags, mode)
 		ldr	r2, =mode
@@ -30,7 +32,7 @@ run:
 		bge	1f
 		
 		mov	r0, #fail_open
-		pop	{r4,r5,r7,pc}
+		pop	{r4,r5,r7,r8,r9,pc}
 1:
 		ldr	r0, =buffer		@bufsize = writeHeader(buffer, xsize, ysize)
 		ldr	r1, =xsize		@loads address of xsize
@@ -49,9 +51,9 @@ run:
 		bge	2f
 
 		mov	r0, #fail_writeheader
-		pop	{r4,r5,r7,pc}
+		pop	{r4,r5,r7,r8,r9,pc}
 2:
-						@bufsize = 0
+		mov	r5, #0			@bufsize = 0
 						@for column from 0 to xsize-1 inclusive:
     							@color = column << 8   @ color = column shifted left 8 bits
     							@bufsize += writeRGB(buffer+bufsize, color)
@@ -69,10 +71,10 @@ run:
 		bge	4f
 
 		mov	r0, #fail_close
-		pop	{r4,r5,r7,pc}
+		pop	{r4,r5,r7,r8,r9,pc}
 4:
 		mov	r0, #0			@return 0 (success)
-		pop	{r4,r5,r7,pc}
+		pop	{r4,r5,r7,r8,r9,pc}
   
 		.bss
 buffer:         .space 64*1024
