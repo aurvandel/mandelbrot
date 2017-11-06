@@ -17,10 +17,11 @@
 		@r4 = fd
 		@r5 = bufsize
 		@r8 = column
-
+		@r10 = buffer
+		
 @ run() -> exit code
 run:
-		push	{r4,r5,r7,r8,r9,lr}
+		push	{r4,r5,r7,r8,r9,r10,r11,lr}
 		ldr	r0, =filename
 		ldr	r1, =flags		@fd = open(filename, flags, mode)
 		ldr	r2, =mode
@@ -32,7 +33,7 @@ run:
 		bge	1f
 		
 		mov	r0, #fail_open
-		pop	{r4,r5,r7,r8,r9,pc}
+		pop	{r4,r5,r7,r8,r9,r10,r11,lr}
 1:
 		ldr	r0, =buffer		@bufsize = writeHeader(buffer, xsize, ysize)
 		ldr	r1, =xsize		@loads address of xsize
@@ -51,30 +52,57 @@ run:
 		bge	2f
 
 		mov	r0, #fail_writeheader
-		pop	{r4,r5,r7,r8,r9,pc}
+		pop	{r4,r5,r7,r8,r9,r10,r11,lr}
 2:
 		mov	r5, #0			@bufsize = 0
-						@for column from 0 to xsize-1 inclusive:
-    							@color = column << 8   @ color = column shifted left 8 bits
-    							@bufsize += writeRGB(buffer+bufsize, color)
-    							@buffer[bufsize] = ' '
-    							@bufsize += 1
-						@buffer[bufsize-1] = '\n'  @ replace last space with a newline
-						@status = write(fd, buffer, bufsize)
-						@if status < 0: return fail_writerow
-3:		
+		mov	r8, #0			@column = 0
+		ldr	r9, =xsize		@limit of column loop is xsize
+		ldr	r9, [r9]
+		ldr	r10, =buffer		@put buffer address into r0
+		b	4f			@goto test
+
+3:						@for column from 0 to xsize-1 inclusive:
+    		mov	r0, r10			@put buffer address into r0
+		add	r1, r8, lsl #8		@color = column << 8   @ color = column shifted left 8 bits
+    		add	r0, r0, r5		@bufsize += writeRGB(buffer+bufsize, color)
+		bl	writeRGB
+		add	r5, r5, r0
+    		
+		mov	r1, #' '		@buffer[bufsize] = ' '
+		strb	r1, [r10, r5]
+		add	r5, r5, #1		@bufsize += 1
+    							
+4:						@test
+		cmp	r8, r9
+		blt	3b
+		
+		mov	r1, #'\n'		@buffer[bufsize-1] = '\n'  @ replace last space with a newline
+		sub	r2, r5, #1
+		strb	r1, [r10, r2]		
+						
+		mov	r1, r10			@status = write(fd, buffer, bufsize)
+		mov	r0, r4
+		mov	r7, #sys_write
+		svc	#0
+		
+		cmp	r0, #0			@if status < 0: return fail_writerow
+		bge	5f
+		
+		mov	r0, #fail_writerow
+		pop	{r4,r5,r7,r8,r9,r10,r11,lr}				
+5:		
 		mov	r0, r4			@status = close(fd)
 		mov	r7, #sys_close
 		svc	#0
 		
 		cmp	r0, #0			@if status < 0: return fail_close
-		bge	4f
+		bge	6f
 
 		mov	r0, #fail_close
-		pop	{r4,r5,r7,r8,r9,pc}
-4:
+		pop	{r4,r5,r7,r8,r9,r10,r11,lr}
+6:
 		mov	r0, #0			@return 0 (success)
-		pop	{r4,r5,r7,r8,r9,pc}
+		pop	{r4,r5,r7,r8,r9,r10,r11,lr}
   
 		.bss
 buffer:         .space 64*1024
