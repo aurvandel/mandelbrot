@@ -62,9 +62,8 @@ run:
 		b	4f			@goto test
 
 3:						@for column from 0 to xsize-1 inclusive:
-    		mov	r0, r10			@put buffer address into r0
 		add	r1, r8, lsl #8		@color = column << 8   @ color = column shifted left 8 bits
-    		add	r0, r0, r5		@bufsize += writeRGB(buffer+bufsize, color)
+    		add	r0, r10, r5		@bufsize += writeRGB(buffer+bufsize, color)
 		bl	writeRGB
 		add	r5, r5, r0
     		
