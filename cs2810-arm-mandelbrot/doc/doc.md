@@ -16,25 +16,29 @@ the file, close the file, and then return.
 Your code should implement this pseudo-code:
 
 ```
-fd = open("fractal.ppm", flags, mode)
+fd = open(filename, flags, mode)
 if fd < 0: return fail_open
 
-bufsize = writeHeader(buffer, xsize, ysize)
-status = write(fd, buffer, bufsize)
+# write the header
+length = writeHeader(buffer, xsize, ysize)
+status = write(fd, buffer, length)
 if status < 0: return fail_writeheader
 
-bufsize = 0
-for column from 0 to xsize-1 inclusive:
-    color = column << 8   @ color = column shifted left 8 bits
-    bufsize += writeRGB(buffer+bufsize, color)
-    buffer[bufsize] = ' '
-    bufsize += 1
-buffer[bufsize-1] = '\n'  @ replace last space with a newline
-status = write(fd, buffer, bufsize)
+# write a single row of pixels
+length = 0
+for column in range(xsize):
+    color = column << 8
+    length += writeRGB(buffer+length, color)
+    buffer[length] = ' '
+    length += 1
+
+# replace last space with a newline
+buffer[length-1] = '\n'
+status = write(fd, buffer, length)
 if status < 0: return fail_writerow
 
+# close the file
 status = close(fd)
 if status < 0: return fail_close
-
-return 0 (success)
+return 0
 ```
