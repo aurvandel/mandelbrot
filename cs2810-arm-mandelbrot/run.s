@@ -58,40 +58,35 @@ run:
 		mov	r8, #0			@column = 0
 		ldr	r9, =xsize		@limit of column loop is xsize
 		ldr	r9, [r9]
-<<<<<<< HEAD
-		lidr	r10, =buffer		@put buffer address into r10
-		mov	r11, #0			@color scratch register
-		mov	r1, #0
-=======
-		ldr	r10, =buffer		@put buffer address into r10
->>>>>>> 54be7a7d082d11246090eab3c11e4dc7000d3f25
+		ldr	r10, =buffer
 		b	4f			@goto test
 
 3:						@for column from 0 to xsize inclusive:
 		mov	r1, #0			@clear r1
-		mov	r0, #0			@clear r0
+		ldr	r0, =buffer
 		add	r1, r8, lsl #8		@color = column << 8   @ color = column shifted left 8 bits
-    		add	r0, r10, r5		@bufsize += writeRGB(buffer+bufsize, color)
+    		add	r0, r0, r5		@bufsize += writeRGB(buffer+bufsize, color)
 		bl	writeRGB
 		add	r5, r5, r0
     		
 		mov	r1, #' '		@buffer[bufsize] = ' '
-		add	r5, r5, #1		@bufsize += 1
 		strb	r1, [r10, r5]
-    		add	r8, r8, #1		@column += 1						
+   		add	r8, r8, #1		@column += 1						
+		add	r5, r5, #1		@bufsize += 1
 4:						@test
 		cmp	r8, r9
 		blt	3b
 		
 		mov	r1, #'\n'		@buffer[bufsize-1] = '\n'  @ replace last space with a newline
 		sub	r2, r5, #1
-		strb	r1, [r10, r2]		
+		strb	r1, [r10, r2]
 						
 		mov	r1, r10			@status = write(fd, buffer, bufsize)
 		mov	r0, r4
+		mov	r2, r5
 		mov	r7, #sys_write
 		svc	#0
-		
+	
 		cmp	r0, #0			@if status < 0: return fail_writerow
 		bge	5f
 		
