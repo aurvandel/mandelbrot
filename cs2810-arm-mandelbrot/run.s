@@ -58,7 +58,9 @@ run:
 		mov	r8, #0			@column = 0
 		ldr	r9, =xsize		@limit of column loop is xsize
 		ldr	r9, [r9]
-		ldr	r10, =buffer		@put buffer address into r0
+		lidr	r10, =buffer		@put buffer address into r10
+		mov	r11, #0			@color scratch register
+		mov	r1, #0
 		b	4f			@goto test
 
 3:						@for column from 0 to xsize-1 inclusive:
@@ -68,8 +70,8 @@ run:
 		add	r5, r5, r0
     		
 		mov	r1, #' '		@buffer[bufsize] = ' '
-		strb	r1, [r10, r5]
 		add	r5, r5, #1		@bufsize += 1
+		strb	r1, [r10, r5]
     		add	r8, r8, #1		@column += 1						
 4:						@test
 		cmp	r8, r9
