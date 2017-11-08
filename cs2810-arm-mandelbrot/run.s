@@ -58,7 +58,6 @@ run:
 		mov	r8, #0			@column = 0
 		ldr	r9, =xsize		@limit of column loop is xsize
 		ldr	r9, [r9]
-		ldr	r10, =buffer
 		b	4f			@goto test
 
 3:						@for column from 0 to xsize inclusive:
@@ -70,7 +69,8 @@ run:
 		add	r5, r5, r0
     		
 		mov	r1, #' '		@buffer[bufsize] = ' '
-		strb	r1, [r10, r5]
+		ldr	r0, =buffer
+		strb	r1, [r0, r5]
    		add	r8, r8, #1		@column += 1						
 		add	r5, r5, #1		@bufsize += 1
 4:						@test
@@ -78,10 +78,9 @@ run:
 		blt	3b
 		
 		mov	r1, #'\n'		@buffer[bufsize-1] = '\n'  @ replace last space with a newline
-		sub	r2, r5, #1
-		strb	r1, [r10, r2]
+		strb	r1, [r0, r5]
 						
-		mov	r1, r10			@status = write(fd, buffer, bufsize)
+		mov	r1, r0			@status = write(fd, buffer, bufsize)
 		mov	r0, r4
 		mov	r2, r5
 		mov	r7, #sys_write
