@@ -54,14 +54,16 @@ run:
 		mov	r0, #fail_writeheader
 		pop	{r4,r5,r7,r8,r9,r10,r11,lr}
 2:
-		mov	r5, #0			@bufsize = 0
+		mov	r5, #0			@length = 0
 		mov	r8, #0			@column = 0
 		ldr	r9, =xsize		@limit of column loop is xsize
 		ldr	r9, [r9]
-		ldr	r10, =buffer		@put buffer address into r0
+		ldr	r10, =buffer		@put buffer address into r10
 		b	4f			@goto test
 
-3:						@for column from 0 to xsize-1 inclusive:
+3:						@for column from 0 to xsize inclusive:
+		mov	r1, #0			@clear r1
+		mov	r0, #0			@clear r0
 		add	r1, r8, lsl #8		@color = column << 8   @ color = column shifted left 8 bits
     		add	r0, r10, r5		@bufsize += writeRGB(buffer+bufsize, color)
 		bl	writeRGB
