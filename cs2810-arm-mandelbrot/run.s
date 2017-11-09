@@ -76,9 +76,10 @@ run:
 		cmp	r8, r9
 		blt	3b
 		
-		mov	r1, #'\n'		@buffer[bufsize-1] = '\n'  @ replace last space with a newline
-		strb	r1, [r0, r5]
-						
+		mov	r1, #'\n'
+		sub	r2, r5, #1		@buffer[bufsize-1] = '\n'  @ replace last space with a newline
+		strb	r1, [r0, r2]
+					
 		mov	r1, r0			@status = write(fd, buffer, bufsize)
 		mov	r0, r4
 		mov	r2, r5
