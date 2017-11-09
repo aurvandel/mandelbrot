@@ -32,7 +32,7 @@ run:
 		bge	1f
 		
 		mov	r0, #fail_open
-		pop	{r4,r5,r7,r8,r9,lr}
+		pop	{r4,r5,r7,r8,r9,pc}
 1:
 		ldr	r0, =buffer		@bufsize = writeHeader(buffer, xsize, ysize)
 		ldr	r1, =xsize		@loads address of xsize
@@ -51,7 +51,7 @@ run:
 		bge	2f
 
 		mov	r0, #fail_writeheader
-		pop	{r4,r5,r7,r8,r9,lr}
+		pop	{r4,r5,r7,r8,r9,pc}
 2:
 		mov	r5, #0			@length = 0
 		mov	r8, #0			@column = 0
@@ -89,7 +89,7 @@ run:
 		bge	5f
 		
 		mov	r0, #fail_writerow
-		pop	{r4,r5,r7,r8,r9,lr}				
+		pop	{r4,r5,r7,r8,r9,pc}				
 5:		
 		mov	r0, r4			@status = close(fd)
 		mov	r7, #sys_close
@@ -99,10 +99,10 @@ run:
 		bge	6f
 
 		mov	r0, #fail_close
-		pop	{r4,r5,r7,r8,r9,lr}
+		pop	{r4,r5,r7,r8,r9,pc}
 6:
 		mov	r0, #0			@return 0 (success)
-		pop	{r4,r5,r7,r8,r9,lr}
+		pop	{r4,r5,r7,r8,r9,pc}
   
 		.bss
 buffer:         .space 64*1024
