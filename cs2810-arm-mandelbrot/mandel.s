@@ -38,13 +38,11 @@ mandel:
 3:
 		faddd	d3, d3, d3	  @compute b = 2ab + y
 		faddd	d2, d2, d2
-		faddd	d3, d3, d2
+		fmuld	d3, d3, d2
 		faddd	d3, d3, d1
 		
-		fsubd	d2, d4, d5	  @compute a = a² - b² + x (this can be computed in-place, overwriting the old value of a; note that a² and b² are already computed)
+		fsubd	d2, d4, d5	  @compute a = a² - b² + x 
 		faddd	d2, d2, d0
 		b	1b
 
 four:		.double 4.0
-
-zero:		.double	0.0
