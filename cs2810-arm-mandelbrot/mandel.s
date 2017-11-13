@@ -19,17 +19,28 @@ mandel:
 		fcpyd	d2, d0		@copy x into a, and y into b
 		fcpyd	d3, d1
 1:					@forever loop:
-		fcpyd	d4, d2			@compute a²  
+		fcpyd	d4, d2		  @compute a²  
 		fmuld	d4, d4, d4
-		fcpyd	d5, d3			@compute b²
+		fcpyd	d5, d3		  @compute b²
 		fmuld	d5, d5, d5
-		fcpyd	d6, #0
-		faddd	d6, d4, d5		@a² + b²
-						@if a² + b² ≥ 4.0, return iterations(r0) (mov pc, lr)
-		add	r0, r0, #1		@increment iteration count
-		mov 	pc, lr			@if iterations > maxIterations, return 0
-						@compute b = 2ab + y (this can be computed in-place, overwriting the old value of b)
-						@compute a = a² - b² + x (this can be computed in-place, overwriting the old value of a; note that a² and b² are already computed)
+		fldd	d6, zero
+		faddd	d6, d4, d5	  @a² + b²
+		
+		fcmpd	d6, d7		  @if a² + b² ≥ 4.0, return iterations(r0) (mov pc, lr)
+		fmstat			    @copy flags to integer status register
+		blt	2f
+		mov	pc, lr
+2:
+		add	r0, r0, #1	  @increment iteration count
+		cmp	r0, r1		  @if iterations > maxIterations, return 0
+		blt	3f
+		mov	r0, #0
+		mov	pc, lr
+3:
+					  @compute b = 2ab + y (this can be computed in-place, overwriting the old value of b)
+					  @compute a = a² - b² + x (this can be computed in-place, overwriting the old value of a; note that a² and b² are already computed)
 		b	1b
 
 four:		.double 4.0
+
+zero:		.double	0.0
