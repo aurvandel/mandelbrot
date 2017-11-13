@@ -23,7 +23,6 @@ mandel:
 		fmuld	d4, d4, d4
 		fcpyd	d5, d3		  @compute b²
 		fmuld	d5, d5, d5
-		fldd	d6, zero
 		faddd	d6, d4, d5	  @a² + b²
 		
 		fcmpd	d6, d7		  @if a² + b² ≥ 4.0, return iterations(r0) (mov pc, lr)
@@ -37,8 +36,13 @@ mandel:
 		mov	r0, #0
 		mov	pc, lr
 3:
-					  @compute b = 2ab + y (this can be computed in-place, overwriting the old value of b)
-					  @compute a = a² - b² + x (this can be computed in-place, overwriting the old value of a; note that a² and b² are already computed)
+		faddd	d3, d3, d3	  @compute b = 2ab + y
+		faddd	d2, d2, d2
+		faddd	d3, d3, d2
+		faddd	d3, d3, d1
+		
+		fsubd	d2, d4, d5	  @compute a = a² - b² + x (this can be computed in-place, overwriting the old value of a; note that a² and b² are already computed)
+		faddd	d2, d2, d0
 		b	1b
 
 four:		.double 4.0
