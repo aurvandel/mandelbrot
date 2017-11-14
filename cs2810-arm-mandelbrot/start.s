@@ -10,8 +10,8 @@ _start:
 
                 @ load the first test case below
                 @ change these two lines to use a different test case
-                fldd    d0, x1
-                fldd    d1, y1
+                fldd    d0, x3
+                fldd    d1, y3
                 bl      mandel
 
                 @ exit system call

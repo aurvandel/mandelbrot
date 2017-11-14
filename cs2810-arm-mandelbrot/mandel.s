@@ -36,7 +36,7 @@ mandel:
 		mov	r0, #0
 		mov	pc, lr
 3:
-		faddd	d3, d3, d3	  @compute b = 2ab + y
+					  @compute b = 2ab + y
 		faddd	d2, d2, d2
 		fmuld	d3, d3, d2
 		faddd	d3, d3, d1
