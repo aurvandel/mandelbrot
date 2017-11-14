@@ -32,7 +32,7 @@ mandel:
 2:
 		add	r0, r0, #1	  @increment iteration count
 		cmp	r0, r1		  @if iterations > maxIterations, return 0
-		blt	3f
+		ble	3f
 		mov	r0, #0
 		mov	pc, lr
 3:

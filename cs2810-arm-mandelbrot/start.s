@@ -6,12 +6,12 @@
 
                 .text
 _start:
-                mov     r0, #100
+                mov     r0, #11
 
                 @ load the first test case below
                 @ change these two lines to use a different test case
-                fldd    d0, x3
-                fldd    d1, y3
+                fldd    d0, x4
+                fldd    d1, y4
                 bl      mandel
 
                 @ exit system call
@@ -33,3 +33,15 @@ y2:             .double -0.62
                 @ test this third: mandel should return 68
 x3:             .double 0.27
 y3:             .double 0.61
+		
+		@failed test case on line 188, us 11 iterations
+x4:		.double	-1.23
+y4:		.double	-0.22
+
+		@failed test case on line 200, 18 iterations
+x5:		.double	-1.24
+y5:		.double	-0.14
+
+		@failed test case on line 212, 55 iterations
+x6:		.double	0.35
+y6:		.double	-0.42
