@@ -11,8 +11,8 @@ _start:
 
                 @ load the first test case below
                 @ change these two lines to use a different test case
-                mov     r1, #col1
-                mov     r2, #row1
+                mov     r1, #col3
+                mov     r2, #row3
                 bl      calcPixel
 
                 @ exit system call
