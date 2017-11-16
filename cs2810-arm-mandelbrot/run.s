@@ -67,12 +67,16 @@ run:
 		b	5f			@goto column test
 
 4:						@for column from 0 to xsize inclusive:
-		mov	r1, #0			@clear r1
-		mov	r2, #0
+		@setup for calcpixel(maxiters, col, row)
+		ldr	r0, =iters
+		ldr	r0, [r0]
+		mov	r1, r8			@put col in r1
+		mov	r2, r11			@put row in r2
+		bl	calcPixel		@return rgb color
+		
+		@setup for writeRGB
+		mov	r1, r0
 		ldr	r0, =buffer
-		add	r1, r8, lsl #8		@color = column << 8   @ color = column shifted left 8 bits
-    		add	r2, r11, lsl #16	@color = row << 16
-		add	r1, r1, r2		@color = row << 16 + column << 8 
 		add	r0, r0, r5		@bufsize += writeRGB(buffer+bufsize, color)
 		bl	writeRGB
 		add	r5, r5, r0
