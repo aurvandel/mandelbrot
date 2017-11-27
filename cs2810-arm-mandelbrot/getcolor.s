@@ -22,7 +22,7 @@ getColor:
 		bl	remainder
 		
 		ldr	r1, =palette
-		ldrb	r2, [r1, r0]
+		ldrb	r2, [r1, r0, lsl #2]
 		mov	r0, r2
 
 		@ use r0 as all three color channels
