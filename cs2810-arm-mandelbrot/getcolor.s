@@ -21,6 +21,10 @@ getColor:
 		ldr	r1, =palette_size
 		bl	remainder
 		
+		ldr	r1, =palette
+		ldrb	r2, [r1, r0]
+		mov	r0, r2
+
 		@ use r0 as all three color channels
                 @orr     r1, r0, r0, lsl #8
                 @orr     r0, r1, r0, lsl #16
