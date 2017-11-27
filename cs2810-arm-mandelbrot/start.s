@@ -7,8 +7,8 @@
                 .text
 _start:
                 @ load a test case for remainder
-                ldr     r0, =num1
-                ldr     r1, =den1
+                ldr     r0, =num4
+                ldr     r1, =den4
                 bl      remainder
 
                 mov     r7, #sys_exit
@@ -29,3 +29,6 @@ _start:
                 @ and the exit status code should be 37
                 .equ    num3, 1234567
                 .equ    den3, 87
+
+		.equ	num4, 124
+		.equ	den4, 124
