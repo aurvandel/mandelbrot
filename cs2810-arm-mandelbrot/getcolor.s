@@ -7,8 +7,6 @@
 @ getColor(iters) -> rgb
 getColor:
                 push    {ip,lr}
-                @ make sure the input is < 256
-                and     r0, r0, #0xff
 
                 @ special case if iters = 0
 		cmp	r0, #0
@@ -25,7 +23,7 @@ getColor:
 		
 		@r0 = colorIndex
 		ldr	r1, =palette
-		ldrb	r2, [r1, r0, lsl #2]	@r2 = palette[colorIndex*4] 
+		ldr	r2, [r1, r0, lsl #2]	@r2 = palette[colorIndex*4] 
 		mov	r0, r2
 
                 pop     {ip,pc}
