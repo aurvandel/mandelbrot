@@ -14,18 +14,18 @@ getColor:
 		cmp	r0, #0
 		bne	1f
 		ldr	r0, =black
+		ldr	r0, [r0]
 		pop	{ip,pc}
 
 1:					@colorIndex = (iterations - 1) % palette_size
 		sub	r0, r0, #1	@iters - 1 as n
 		ldr	r1, =palette_size
+		ldr	r1, [r1]
 		bl	remainder
 		
+		@r0 = colorIndex
 		ldr	r1, =palette
-		ldrb	r2, [r1, r0, lsl #2]
+		ldrb	r2, [r1, r0, lsl #2]	@r2 = palette[colorIndex*4] 
 		mov	r0, r2
 
-		@ use r0 as all three color channels
-                @orr     r1, r0, r0, lsl #8
-                @orr     r0, r1, r0, lsl #16
                 pop     {ip,pc}

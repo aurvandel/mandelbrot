@@ -7,7 +7,7 @@
                 .text
 _start:
                 @ load a test case for getColor
-                mov     r0, #iters1
+                ldr     r0, =iters4
                 bl      getColor
 
                 mov     r7, #sys_exit
@@ -24,4 +24,7 @@ _start:
 
                 @ test this third: getColor should return 0x000000,
                 @ and the exit status code should be 0
-                .equ    iters3, 0
+                .equ    iters3, 0 
+
+		@return 0x00009f
+		.equ	iters4, 413
