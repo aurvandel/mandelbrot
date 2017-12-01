@@ -67,11 +67,28 @@ run:
 		b	5f			@goto column test
 
 4:						@for column from 0 to xsize inclusive:
-		@old calcPixel setup for calcpixel(maxiters, col, row)
-		@step13 calcPixel(int(maxiters, column, row, xsize, ysize), float(xcenter, ycenter, magnification)) → rgb
-		@r9 = xsize
-		@r10 = ysize
-		push	{r10,r11}
+		@r0 = iters
+		@r1 = col
+		@r2 = row
+		@r3 = xsize
+		@sp + 8 = ysize
+		@d0 = xcenter
+		@d1 = ycenter
+		@d2 = magnification
+
+		@calcPixel(int(maxiters, column, row, xsize, ysize), float(xcenter, ycenter, magnification))→rgb
+		
+		@setup the float registers
+		ldr	r0, =xcenter
+		fldd	d0, [r0]
+		ldr	r0, =ycenter
+		fldd	d1, [r0]
+		ldr	r0, =mag
+		fldd	d2, [r0]
+
+		mov	r0, r10			@put ysize in r0 & push to stack
+		push	{r0,r1}
+		
 		ldr	r0, =iters		@put iters in r0
 		ldr	r0, [r0]
 		mov	r1, r8			@put col in r1
