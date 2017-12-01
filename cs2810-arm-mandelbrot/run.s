@@ -67,12 +67,18 @@ run:
 		b	5f			@goto column test
 
 4:						@for column from 0 to xsize inclusive:
-		@setup for calcpixel(maxiters, col, row)
-		ldr	r0, =iters
+		@old calcPixel setup for calcpixel(maxiters, col, row)
+		@step13 calcPixel(int(maxiters, column, row, xsize, ysize), float(xcenter, ycenter, magnification)) → rgb
+		@r9 = xsize
+		@r10 = ysize
+		push	{r10,r11}
+		ldr	r0, =iters		@put iters in r0
 		ldr	r0, [r0]
 		mov	r1, r8			@put col in r1
 		mov	r2, r11			@put row in r2
+		mov	r3, r9			@put xsize in r3
 		bl	calcPixel		@return rgb color
+		add	sp, sp, #8		@add 8 to sp to throw out unneeded value in r10
 		
 		@setup for writeRGB
 		mov	r1, r0
