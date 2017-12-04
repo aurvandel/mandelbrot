@@ -4,7 +4,7 @@ Dynamic Mandelbrot
 In this step you will update your Mandelbrot fractal generator to
 create images of any size, zoomed in at any location.
 
-`params.asm` has been updated for you to include more parameters:
+`params.s` has been updated for you to include more parameters:
 
 *   filename: the name of the output file to create. You will change
     your code to get this parameter here instead of wherever you had
@@ -23,8 +23,6 @@ create images of any size, zoomed in at any location.
 *   iters: the maximum number of iterations to apply when computing
     a pixel. You will change your code to use this value instead of
     having it hard-coded.
-*   antialias: you will use this value in a future project; ignore
-    it for now.
 
 You may change the values in order to generate different images, but
 do not change the *names* of any of these parameters.

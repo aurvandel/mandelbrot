@@ -9,6 +9,6 @@ filename:       .asciz  "fractal.ppm"
 xcenter:        .double -0.743643135
 ycenter:        .double 0.131825963
 mag:            .double 91152.0
-xsize:          .word   128
-ysize:          .word   200
+xsize:          .word   1980
+ysize:          .word   1024
 iters:          .word   1000
