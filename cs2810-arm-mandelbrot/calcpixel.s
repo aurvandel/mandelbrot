@@ -1,5 +1,4 @@
                 .global calcPixel
-		@.equ	neg_one, -1
                 .text
 
 		@r0 = iters
@@ -26,13 +25,13 @@
 calcPixel:
 
 		push	{r4,r5,r6,lr}
-		ldr	r4, [sp, #8]	@retrieve ysize from stack
+		ldr	r4, [sp, #16]	@retrieve ysize from stack
 		fldd	d3, two
-		
+
 		@find minsize
 		cmp	r3, r4		
-		movle	r3, r5
-		movgt	r4, r5
+		movle	r5, r3
+		movgt	r5, r4
 		
 		@calculate denominators (magnification * (minsize - 1)
 		sub	r5, r5, #1	@r5 = minsize -1
@@ -60,12 +59,12 @@ calcPixel:
 		fsitod	d8, s17
 		fsubd	d8, d8, d5
 		
-		@xcenter + d7
+		fdivd	d7, d7, d6
+		fdivd	d8, d8, d6
+
 		faddd	d0, d0, d7
-		
-		@ycenter - d8
 		fsubd	d1, d1, d8
-		
+
 		bl	mandel		@mandel(maxiters, x, y) --> iters
 
 		bl	getColor
